@@ -55,7 +55,7 @@ on d.date=v.date and d.location = v.location
 where d.continent is not null
 order by d.location, d.date
 
--- 1. For column PercentCalculation, cannot use total_cases/RollingTotalCases so option 1 is write it down again or use CTE in option 2
+-- 1. For column PercentCalculation, cannot use total_cases/RollingTotalCases so option 1 is write it down again or use CTE in option 2 or temp table in option 3
 select  d.location, d.date, d.continent, d.total_cases, d.new_cases, d.population, v.total_tests, v.people_vaccinated, v.new_vaccinations,
 sum(cast (total_cases as float)) OVER (partition by d.location order by d.date) as RollingTotalCases,
 (sum(cast (total_cases as float)) OVER (partition by d.location order by d.date)/population*100) as PercentCalculation
@@ -91,7 +91,6 @@ full join
 [PortfolioProject].[dbo].['covid vaccination$'] as v
 on d.date=v.date and d.location = v.location
 where d.continent is not null
-
 select 
 *,
 RollingTotalCases/population*100
